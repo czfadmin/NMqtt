@@ -1,3 +1,4 @@
 .gradle
 .idea
-taget/
+target/*
+build/*
