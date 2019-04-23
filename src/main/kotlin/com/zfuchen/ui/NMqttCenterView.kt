@@ -1,38 +1,77 @@
 package com.zfuchen.ui
 
-import com.zfuchen.controllers.ConnectController
-import tornadofx.*
+import com.zfuchen.controllers.MqttController
+import com.zfuchen.ui.ui_publish.TopictoPublishView
+import javafx.beans.property.SimpleBooleanProperty
+import javafx.beans.property.SimpleStringProperty
+import javafx.collections.ObservableList
+import javafx.geometry.Insets
+import javafx.scene.control.Tab
+import javafx.stage.StageStyle
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
-import org.eclipse.paho.client.mqttv3.MqttClient
+import tornadofx.*
 
 
 class NMqttCenterView : View("NMqttCenter View") {
-    var topic = "MQTT Examples"
-    var content = "Message from MqttPublishSample"
-    var qos = 2
+    private var conent = SimpleStringProperty()
     private var broker = "tcp://iot.eclipse.org:1883"
     private var clientId = "JavaSample"
     private var persistence = MemoryPersistence()
     private var isConnected = false
-    private var sampleClient: MqttClient = MqttClient(broker, clientId, persistence)
-    private val clientController: ConnectController = ConnectController(sampleClient)
+    private lateinit var tabs: ObservableList<Tab>
+    private val clientController: MqttController = MqttController(broker, clientId, persistence)
+    private var connectBtnDisableProperty = SimpleBooleanProperty()
+    private var disconnectBtnDisableProperty = SimpleBooleanProperty()
+    private var hasConnected: Boolean = false
+
+    init {
+        primaryStage.width = 720.0
+        primaryStage.height = 480.0
+    }
+
     override val root = tabpane {
         tab("控制面板") {
-            button("Connect Mqtt Server") {
-                action {
-                    runAsync {
-                        isConnected = clientController.connectClient()
-                    } ui {
-                        this@tab.apply {
-                            label {
-                                text = (if (isConnected) {
-                                    "连接上MQtt服务!"
-                                } else "连接失败!")
-                            }
+            isClosable = false
+            this@NMqttCenterView.tabs = tabs
+            hbox {
+                paddingProperty().value = Insets(10.0,10.0,5.0,5.0)
+                button("Create MQTT Client") {
+                    action {
+                        replaceWith<CreateMqttClientView>()
+                    }
+                }
+                button("断开连接") {
+                    disableProperty().bind(disconnectBtnDisableProperty)
+                    disconnectBtnDisableProperty.value = !hasConnected
+                    action {
+                        connectBtnDisableProperty.value = false
+                        disconnectBtnDisableProperty.value = true
+                        hasConnected = false
+                        clientController.disconnect()
+                        if (tabs.size > 1) {
+                            tabs.last().close()
                         }
                     }
                 }
+                button("Test Mqtt Client"){
+                    action {
+//                        replaceWith<TopictoPublishView>()
+                        find<TopictoPublishView>().openModal(StageStyle.UTILITY,resizable = false)
+                    }
+
+                }
             }
+
+
+//            textfield("Result") {
+//
+//            }
         }
+        tab("MQTT 客户端"){
+
+        }
+
     }
+
 }
+

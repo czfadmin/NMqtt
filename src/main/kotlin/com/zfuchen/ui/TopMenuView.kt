@@ -14,6 +14,7 @@ class TopMenuView : View("My View") {
             item("Save")
             item("Quit", "Shortcut+Q").action {
                 println("Quitting")
+                System.exit(0)
             }
         }
         menu("Edit") {
