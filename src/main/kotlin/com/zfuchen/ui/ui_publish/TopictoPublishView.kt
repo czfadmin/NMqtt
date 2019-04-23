@@ -1,6 +1,5 @@
 package com.zfuchen.ui.ui_publish
-
-import com.zfuchen.util.NMqttClientHelper.Companion.payloadType
+import com.zfuchen.util.NMqttClientHelper.Companion.playloadType
 import com.zfuchen.util.NMqttClientHelper.Companion.qosSelects
 import javafx.geometry.Insets
 import javafx.geometry.Orientation
@@ -10,25 +9,11 @@ import javafx.scene.layout.BorderStrokeStyle
 import javafx.scene.layout.Priority
 import tornadofx.*
 
-class TopictoPublishView : Fragment("My View") {
-    init {
-
-    }
+class TopicToPublishView : Fragment("My View") {
 
     override val root = vbox {
-//        primaryStage.width = 380.0
-//        primaryStage.height = 600.0
-//        primaryStage.maxWidth = 380.0
-//        primaryStage.minWidth = 380.0
-//        primaryStage.minHeight = 600.0
-//        primaryStage.maxHeight = 600.0
-
         prefHeight=600.0
         prefWidth=360.0
-//        minWidth=380.0
-//        minHeight=600.0
-//        maxHeight=600.0
-//        maxWidth=380.0
         paddingProperty().value = Insets(10.0)
         borderpane {
             left = form {
@@ -45,6 +30,7 @@ class TopictoPublishView : Fragment("My View") {
                         field("QoS") {
                             combobox<String> {
                                 fitToParentWidth()
+                                valueProperty().value= qosSelects[0]
                                 items = qosSelects
                             }
                         }
@@ -56,7 +42,8 @@ class TopictoPublishView : Fragment("My View") {
                         field("Playload Type") {
                             combobox<String> {
                                 fitToParentWidth()
-                                items = payloadType
+                                items = playloadType
+                                valueProperty().value=playloadType[0]
                             }
                         }
                         vbox {
@@ -76,7 +63,7 @@ class TopictoPublishView : Fragment("My View") {
                                 }
                                 button("取消") {
                                     action {
-                                        this@TopictoPublishView.close()
+                                        this@TopicToPublishView.close()
                                     }
                                 }
                             }

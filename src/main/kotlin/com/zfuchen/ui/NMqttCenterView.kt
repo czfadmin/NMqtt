@@ -1,7 +1,8 @@
 package com.zfuchen.ui
 
 import com.zfuchen.controllers.MqttController
-import com.zfuchen.ui.ui_publish.TopictoPublishView
+import com.zfuchen.ui.ui_publish.TopicToPublishView
+import com.zfuchen.ui.ui_publish.TopicToPublishView2
 import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.ObservableList
@@ -55,20 +56,14 @@ class NMqttCenterView : View("NMqttCenter View") {
                 }
                 button("Test Mqtt Client"){
                     action {
-//                        replaceWith<TopictoPublishView>()
-                        find<TopictoPublishView>().openModal(StageStyle.UTILITY,resizable = false)
+                        find<TopicToPublishView>().openModal(StageStyle.UTILITY,resizable = false)
                     }
 
                 }
             }
-
-
-//            textfield("Result") {
-//
-//            }
         }
         tab("MQTT 客户端"){
-
+            add(TopicToPublishView2())
         }
 
     }

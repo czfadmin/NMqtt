@@ -7,7 +7,7 @@ class NMqttClientHelper {
         val qosSelects = FXCollections.observableArrayList<String>(
             "0-Atleast Once", "1-Atleast Once", "2-Exactly Once"
         )!!
-        val payloadType = FXCollections.observableArrayList(
+        val playloadType = FXCollections.observableArrayList(
             "String/JSON/XML/Characters",
             "Binary Array",
             "Octal Array",
